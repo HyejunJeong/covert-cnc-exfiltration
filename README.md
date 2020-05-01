@@ -1,1 +1,0 @@
-# covert-cnc-exfiltration

