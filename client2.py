@@ -24,7 +24,7 @@ class client:
 
     def __init__(self):
         # deamonize the process
-        # self.daemonize()
+        self.daemonize()
 
         # acquire process lock so only one instance of the daemon can exist at a time
         self.get_lock()
