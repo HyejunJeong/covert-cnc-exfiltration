@@ -13,3 +13,8 @@ After that, try running a command. You can download and upload files using downl
 
 We need to rewrite the message send and recieve through a covert channel so data is not suspicious
 
+
+ssh into aws cloud server 
+
+run "chmod 700 ./aws_key.pem"
+then do "ssh -i "aws_key.pem" ubuntu@ec2-18-205-103-236.compute-1.amazonaws.com"

