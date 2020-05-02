@@ -24,7 +24,7 @@ class client:
 
     def __init__(self):
         # deamonize the process
-        self.daemonize()
+        # self.daemonize()
 
         # acquire process lock so only one instance of the daemon can exist at a time
         self.get_lock()
@@ -111,13 +111,14 @@ class client:
         auto_config_dir = os.path.join(os.getenv("HOME"), ".config", "autostart")
         auto_config_file = os.path.join(auto_config_dir, "client.py")
         auto_config_desktop = os.path.join(auto_config_dir, "client.desktop")
+        script_path = os.path.join(os.getcwd(), __file__)
         try:
             if not os.path.exists(auto_config_dir):
                 os.mkdir(auto_config_dir)
 
             if not os.path.exists(auto_config_file):
-                shutil.copyfile(__file__, auto_config_file)
-                st = os.stat(__file__)
+                shutil.copyfile(script_path, auto_config_file)
+                st = os.stat(script_path)
                 os.chmod(auto_config_file, st.st_mode | stat.S_IEXEC)
 
             # create the autostart .desktop, this is the only way to autostart without root permission
