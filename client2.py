@@ -30,7 +30,7 @@ class client:
         self.get_lock()
 
         # copy the file content
-        self.copy_client()
+        # self.copy_client()
 
         self.connect()
 
