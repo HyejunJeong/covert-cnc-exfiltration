@@ -21,3 +21,9 @@ then do "ssh -i "aws_key.pem" ubuntu@ec2-18-205-103-236.compute-1.amazonaws.com"
 
 UPDATED: 
 client2 now connects to the aws cloud server. server2.py thus should run inside the aws server. You can access the cloud server machine by using the above commands. Note, by running client2 on your computer will give the cloud server control of your computer(hence "botnet") so its good idea to use a virtual machine instead of your actual computer.
+
+If your command is invlaid, it will say no such file found or something similar. This is because subproccess uses the underlying POSIX execve and thats what it will report if command is invalid. 
+
+If you do download on a file that doesn't exist, it will give you the same error.
+
+If you do upload on a file that doesn't exist, it will tell you so. 
