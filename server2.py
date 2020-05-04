@@ -80,7 +80,7 @@ class server:
                     print("choose a file")
                     continue
                 try:
-                    conn.send(str.encode(cmd))
+                    self.server_send(conn, str.encode(cmd))
                     self.recv_file(conn, addr)
                     continue
                 except Exception as error:
@@ -97,7 +97,7 @@ class server:
                     print("file does not exit, use relative or absolute path")
                     continue
                 try:
-                    conn.send(str.encode(cmd))
+                    self.server_send(conn, str.encode(cmd))
                     self.send_file(cmd_array[1], conn, addr)
                     continue
                 except Exception as error:
@@ -107,8 +107,8 @@ class server:
             # run shell command
             if len(str.encode(cmd)) > 0:
                 try:
-                    conn.send(str.encode(cmd))
-                    response = str(conn.recv(server.BUFFER_SIZE), "utf-8")
+                    self.server_send(conn, str.encode(cmd))
+                    response = str(self.server_recv(conn), "utf-8")
                     print(response, end="")
                     continue
                 except Exception as error:
@@ -151,8 +151,8 @@ class server:
         result = ''
         for i, conn in enumerate(server.conns):
             try:
-                conn.send(str.encode(' '))
-                conn.recv(server.BUFFER_SIZE)
+                self.server_send(conn, str.encode(' '))
+                self.server_recv(conn)
             except Exception as error:
                 del server.conns[i]
                 del server.addrs[i]
@@ -160,7 +160,7 @@ class server:
         print(result)
 
     def recv_file(self, conn, addr):
-        file_data = conn.recv(server.BUFFER_SIZE).decode()
+        file_data = self.server_recv(conn).decode()
         if len(file_data) < 5:
             print(file_data)
             return
@@ -175,26 +175,34 @@ class server:
         file_name = os.path.basename(file_name)
         file_size = int(file_size)
         with open(file_name, "wb") as file:
-            bytes = conn.recv(server.BUFFER_SIZE)
+            bytes = self.server_recv(conn)
             while True:
                 file.write(bytes)
                 file_size -= server.BUFFER_SIZE
                 if file_size <= 0:
                     break
-                bytes = conn.recv(server.BUFFER_SIZE)
+                bytes = self.server_recv(conn)
         print("Done")
 
     def send_file(self, filename, conn, addr):
-        conn.recv(server.BUFFER_SIZE)
         file_size = os.path.getsize(filename)
         print(f"begin uploading {filename}, size is {file_size}")
-        conn.send(f"BEGIN{filename}{server.SEPARATOR}{file_size}".encode())
+        self.server_send(conn, f"BEGIN{filename}{server.SEPARATOR}{file_size}".encode())
+        self.server_recv(conn)
         with open(filename, "rb") as file:
             bytes = file.read(server.BUFFER_SIZE)
             while bytes:
-                conn.sendall(bytes)
+                self.server_send(conn, bytes)
                 bytes = file.read(server.BUFFER_SIZE)
         print("done")
+
+    # send the msg to the server. msg is in bytes and conn is the client connection
+    def server_send(self, conn, msg):
+        conn.send(msg)
+
+    # receive message from the server, the returned message is in bytes, conn is the client connection
+    def server_recv(self, conn):
+        return conn.recv(server.BUFFER_SIZE)
 
 if __name__ == '__main__':
     server()
