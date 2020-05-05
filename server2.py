@@ -9,7 +9,7 @@ import os
 
 class server:
     server_sock = None
-    port = 3000
+    port = 53 #3000
     host = '0.0.0.0'
     BUFFER_SIZE = 20480
     # these are for denoting what jobs to perform, 1 for handling connection, 2 for interactive server
