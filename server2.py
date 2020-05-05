@@ -10,7 +10,8 @@ import os
 class server:
     server_sock = None
     port = 53 #3000
-    host = '0.0.0.0'
+    hostname = socket.gethostname()
+    host = socket.gethostbyname(hostname) #'172.31.85.26'
     BUFFER_SIZE = 20480
     # these are for denoting what jobs to perform, 1 for handling connection, 2 for interactive server
     JOB_NUM = [1, 2]
