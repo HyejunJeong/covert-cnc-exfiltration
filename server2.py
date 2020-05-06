@@ -13,7 +13,6 @@ class server:
     port = 53 #3000
     hostname = socket.gethostname()
     host = socket.gethostbyname(hostname) #'172.31.85.26'
-    print(host)
     BUFFER_SIZE = 20480
     # these are for denoting what jobs to perform, 1 for handling connection, 2 for interactive server
     JOB_NUM = [1, 2]
