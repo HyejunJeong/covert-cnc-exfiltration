@@ -4,6 +4,7 @@ import sys
 import threading
 from queue import Queue
 import os
+from cryptography.fernet import Fernet
 
 
 
@@ -12,6 +13,7 @@ class server:
     port = 53 #3000
     hostname = socket.gethostname()
     host = socket.gethostbyname(hostname) #'172.31.85.26'
+    print(host)
     BUFFER_SIZE = 20480
     # these are for denoting what jobs to perform, 1 for handling connection, 2 for interactive server
     JOB_NUM = [1, 2]
@@ -22,6 +24,9 @@ class server:
     WORKERS_NUM = 2
 
     SEPARATOR = "<SEPARATOR>"
+
+    #generated before-hand with Fernet
+    key ='YbBugTC9pGKLMdak53p6lmy7OVp3E5qegMkMq4iPxU4='
 
     def __init__(self):
         # create the two threads
@@ -82,7 +87,7 @@ class server:
                     continue
                 try:
                     self.server_send(conn, str.encode(cmd))
-                    self.recv_file(conn, addr)
+                    self.recv_fileserver(conn, addr)
                     continue
                 except Exception as error:
                     print("connection lost: {}".format(str(error)))
@@ -199,11 +204,16 @@ class server:
 
     # send the msg to the server. msg is in bytes and conn is the client connection
     def server_send(self, conn, msg):
-        conn.send(msg)
+        f = Fernet(server.key)
+        encrypted = f.encrypt(msg)
+        conn.send(encrypted)
 
     # receive message from the server, the returned message is in bytes, conn is the client connection
     def server_recv(self, conn):
-        return conn.recv(server.BUFFER_SIZE)
+        f = Fernet(server.key)
+        message = conn.recv(server.BUFFER_SIZE)
+        decyrpted = f.decrypt(message)
+        return decyrpted
 
 if __name__ == '__main__':
     server()
