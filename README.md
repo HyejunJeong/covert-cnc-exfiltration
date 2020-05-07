@@ -29,7 +29,7 @@ Large files are broken up into multiple packets and transferred to the server th
 2. In the aws cloud server, cd to covert-cnc-exfiltration and run the server.
     ```shell
     cd covert-cnc-exfiltration
-    sudo python3 server2.py
+    sudo python3 server.py
     ```
 
 ### Running the __Client__
@@ -42,9 +42,9 @@ Large files are broken up into multiple packets and transferred to the server th
 
 2. Run the client on the project directory (in the client machine).
     ```shell
-    python3 client2.py
+    python3 client.py
     ```
-> **Note:** By running client2.py on your computer will give the cloud server control of your computer (hence "botnet"), so it's good idea to use a virtual machine instead of your actual computer.
+> **Note:** By running client.py on your computer will give the cloud server control of your computer (hence "botnet"), so it's good idea to use a virtual machine instead of your actual computer.
 
 
 
