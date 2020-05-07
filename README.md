@@ -29,3 +29,5 @@ If you do download on a file that doesn't exist, it will give you the same error
 If you do upload on a file that doesn't exist, it will tell you so. 
 
 To rewrite the send and receieve function so data are hidden; please edit the server_send(self, conn, msg) in server2.py, def server_recv(self, conn) in server2py, def client_send(self, msg) in client2.py, and def client_recv(self) in client2.py
+
+A server and the client communicates through a TCP with encryption.
