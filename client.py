@@ -18,8 +18,8 @@ class client:
     # host = 'localhost'
 
     # port of the server to connect to, can be changed depending on what port server is listening at
-    # port = 53
-    port = 3000
+    port = 53
+    # port = 3000
 
     BUFFER_SIZE = 20480
 
@@ -83,7 +83,7 @@ class client:
             sys.exit(1)
 
         # change working dir
-        os.chdir("/")
+        # os.chdir("/")
         # change session id
         os.setsid()
         # set new file permission

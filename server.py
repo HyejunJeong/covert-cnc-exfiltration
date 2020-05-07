@@ -10,8 +10,8 @@ from cryptography.fernet import Fernet
 
 class server:
     server_sock = None
-    # port = 53
-    port = 3000
+    port = 53
+    # port = 3000
     hostname = socket.gethostname()
     host = socket.gethostbyname(hostname) 
     BUFFER_SIZE = 20480
