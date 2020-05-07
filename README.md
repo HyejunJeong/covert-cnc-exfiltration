@@ -39,20 +39,21 @@ This project is divided into the server and client program.
     ```shell
     python3 client2.py
     ```
-    > **Note:** By running client2.py on your computer will give the cloud server control of your computer (hence "botnet"), so it's good idea to use a virtual machine instead of your actual computer.
+> **Note:** By running client2.py on your computer will give the cloud server control of your computer (hence "botnet"), so it's good idea to use a virtual machine instead of your actual computer.
 
 
 
 ## Instructions
 
-1. In the server, wait for the client connection and run ```shell list ``` to see connected clients.
+1. In the server, wait for the client connection and run ``` list ``` to see connected clients.
 
-2. Run ```shell select <client number>``` to select the target
+2. Run ``` select <client number>``` to select the target
 3. Try running a command. 
 
-3-1. If your command is invalid, it will print an error message, "No such file or directory: ...". This is because subprocesses uses the underlying POSIX execve and that's what it will report if command is invalid.
+> **Note:** If your command is invalid, it will print an error message, "No such file or directory: ...". This is because subprocesses uses the underlying POSIX execve and that's what it will report if command is invalid.
 
-4. You can download and upload files using ```shell download <file name from target> ``` and ```shell upload <file name from C&C computer> ``` to download and send files from/to victim respectively.
-4-1. If you do download/upload on a file that doesn't exist, it will give you the same error (No such file or directory: ...).
+4. You can download and upload files using ``` download <file name from target> ``` and ``` upload <file name from C&C computer> ``` to download and send files from/to victim respectively.
+
+> **Note:** If you do download/upload on a file that doesn't exist, it will give you the same error (No such file or directory: ...).
 
 5. Press ``Ctrl-C`` to shut down the server.
