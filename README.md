@@ -1,4 +1,4 @@
-# Covert C&C and Exfiltration
+# __Covert C&C and Exfiltration__
 
 #### https://github.com/HyejunJeong/covert-cnc-exfiltration
 
@@ -12,11 +12,11 @@ The client (victim machine) sends a request and connects to the attacker-control
 Large files are broken up into multiple packets and transferred to the server through TCP connection in order to achieve a reliable in-order data transfer.
 
 
-#### Requirements 
+#### __Requirements__ 
 * Linux
 * python3
 
-## Getting Started
+## __Getting Started__
 
 
 ### Running the __Server__
@@ -48,7 +48,7 @@ Large files are broken up into multiple packets and transferred to the server th
 
 
 
-## Instructions
+## __Instructions__
 
 1. In the server, wait for the client connection and run ``` list ``` to see connected clients.
 
