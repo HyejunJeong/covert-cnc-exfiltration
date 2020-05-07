@@ -4,7 +4,7 @@
 
 This program is a client and a server for covert command and control of, and data exfiltration from, an infected client.
 
-The client is a reverse shell. After an initial execution, the client program will copy itself to the autostart directory so that the script will be executed every time the victim's operating system boots up. 
+The client is a reverse shell. After an initial execution, the client program will copy itself to the autostart directory so that the script will be executed every time the victim's operating system boots up and run silently in the background. 
 
 AWS cloud server is used and the data to be transfered are encrypted to hide the traffic.
 
