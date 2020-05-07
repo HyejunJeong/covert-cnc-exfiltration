@@ -2,7 +2,14 @@
 
 #### https://github.com/HyejunJeong/covert-cnc-exfiltration
 
-This program is a client and a server for covert command and control of, and data exfiltration from, an infected client. 
+This program is a client and a server for covert command and control of, and data exfiltration from, an infected client.
+
+The client is a reverse shell. After an initial execution, the client program will copy itself to the autostart directory so that the script will be executed every time the victim's operating system boots up. 
+
+AWS cloud server is used and the data to be transfered are encrypted to hide the traffic.
+
+The client (victim machine) sends a request and connects to the attacker-controlled server (AWS cloud server) in the same way it receives the shell commands. Notifications and any status updates are periodically sent to the server. Files are encrypted and transferred out of the client's network through TCP connection.  
+Large files are broken up into multiple packets and transferred to the server through TCP connection in order to achieve a reliable in-order data transfer.
 
 
 #### Requirements 
@@ -10,8 +17,6 @@ This program is a client and a server for covert command and control of, and dat
 * python3
 
 ## Getting Started
-
-This project is divided into the server and client program.
 
 
 ### Running the __Server__

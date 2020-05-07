@@ -10,15 +10,17 @@ from cryptography.fernet import Fernet
 
 class server:
     server_sock = None
-    port = 53 #3000
+    port = 53 
     hostname = socket.gethostname()
-    host = socket.gethostbyname(hostname) #'172.31.85.26'
+    host = socket.gethostbyname(hostname) 
     BUFFER_SIZE = 20480
+    
     # these are for denoting what jobs to perform, 1 for handling connection, 2 for interactive server
     JOB_NUM = [1, 2]
     queue = Queue()
     addrs = []
     conns = []
+    
     # number of threads to handle our jobs. Since we only need one thread for each job, we create two threads
     WORKERS_NUM = 2
 
@@ -50,10 +52,12 @@ class server:
                 self.interactive_server()
             server.queue.task_done()
 
+
     def create_tasks(self):
         for i in server.JOB_NUM:
             server.queue.put(i)
         server.queue.join()
+
 
     def accept_connection(self):
         for conn in server.conns:
@@ -121,7 +125,6 @@ class server:
                     break
 
 
-
     def create_sock(self):
         try:
             server.server_sock = socket.socket()
@@ -130,6 +133,7 @@ class server:
         except socket.error as error:
             print("socket creation error: {}".format(str(error)))
             sys.exit(1)
+
 
     def interactive_server(self):
         while True:
@@ -152,6 +156,7 @@ class server:
             else:
                 continue
 
+
     def list_conns(self):
         result = ''
         for i, conn in enumerate(server.conns):
@@ -163,6 +168,7 @@ class server:
                 del server.addrs[i]
             result += "connection {}: {}\n".format(i, str(server.addrs[i]))
         print(result)
+
 
     def recv_file(self, conn, addr):
         file_data = self.server_recv(conn).decode()
@@ -188,6 +194,7 @@ class server:
                     break
                 bytes = self.server_recv(conn)
         print("Done")
+
 
     def send_file(self, filename, conn, addr):
         file_size = os.path.getsize(filename)
