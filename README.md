@@ -1,4 +1,48 @@
+# Covert C&C and Exfiltration
 
+#### https://github.com/HyejunJeong/covert-cnc-exfiltration
+
+This program is a client and a server for covert command and control of, and data exfiltration from, an infected client. 
+
+
+#### Requirements for Server and Client
+* Linux
+
+## Getting Started
+
+This project is divided into the server and client program.
+
+### Running the Server
+
+#### Instructions
+1. cd to the project directory, and ssh into aws cloud server. 
+    ```shell
+    chmod 700 ./aws_key.pem 
+    ssh -i "aws_key.pem" ubuntu@ec2-18-205-103-236.compute-1.amazonaws.com
+    ```
+2. In the aws cloud server, cd to covert-cnc-exfiltration and run the server.
+    ```shell
+    cd covert-cnc-exfiltration
+    sudo python3 server2.py
+    ```
+
+
+### Running the _client_
+> **Note:** You will have to **start the server first** before running the clients. You may run the client program in multiple machines.
+
+1. Clone this repository.
+    ```shell
+    git clone https://github.com/HyejunJeong/covert-cnc-exfiltration
+    ```
+
+2. Run the client on the project directory (in the client machine).
+    ```shell
+    python3 client2.py
+    ```
+    > **Note:** By running client2.py on your computer will give the cloud server control of your computer (hence "botnet") so it's good idea to use a virtual machine instead of your actual computer.
+
+
+------------------------------------------
 server2 and client2 lack data hiding from scapy and use regular tcp socket only. Besides this, it has everything the project required.
 
 Run server2 first and then client2 on your ubuntu machine. 
