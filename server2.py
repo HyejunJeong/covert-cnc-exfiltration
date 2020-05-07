@@ -4,23 +4,30 @@ import sys
 import threading
 from queue import Queue
 import os
+from cryptography.fernet import Fernet
 
 
 
 class server:
     server_sock = None
-    port = 3000
-    host = '0.0.0.0'
+    port = 53 
+    hostname = socket.gethostname()
+    host = socket.gethostbyname(hostname) 
     BUFFER_SIZE = 20480
+    
     # these are for denoting what jobs to perform, 1 for handling connection, 2 for interactive server
     JOB_NUM = [1, 2]
     queue = Queue()
     addrs = []
     conns = []
+    
     # number of threads to handle our jobs. Since we only need one thread for each job, we create two threads
     WORKERS_NUM = 2
 
     SEPARATOR = "<SEPARATOR>"
+
+    #generated before-hand with Fernet
+    key ='YbBugTC9pGKLMdak53p6lmy7OVp3E5qegMkMq4iPxU4='
 
     def __init__(self):
         # create the two threads
@@ -45,10 +52,12 @@ class server:
                 self.interactive_server()
             server.queue.task_done()
 
+
     def create_tasks(self):
         for i in server.JOB_NUM:
             server.queue.put(i)
         server.queue.join()
+
 
     def accept_connection(self):
         for conn in server.conns:
@@ -81,7 +90,7 @@ class server:
                     continue
                 try:
                     self.server_send(conn, str.encode(cmd))
-                    self.recv_file(conn, addr)
+                    self.recv_fileserver(conn, addr)
                     continue
                 except Exception as error:
                     print("connection lost: {}".format(str(error)))
@@ -116,7 +125,6 @@ class server:
                     break
 
 
-
     def create_sock(self):
         try:
             server.server_sock = socket.socket()
@@ -125,6 +133,7 @@ class server:
         except socket.error as error:
             print("socket creation error: {}".format(str(error)))
             sys.exit(1)
+
 
     def interactive_server(self):
         while True:
@@ -147,6 +156,7 @@ class server:
             else:
                 continue
 
+
     def list_conns(self):
         result = ''
         for i, conn in enumerate(server.conns):
@@ -158,6 +168,7 @@ class server:
                 del server.addrs[i]
             result += "connection {}: {}\n".format(i, str(server.addrs[i]))
         print(result)
+
 
     def recv_file(self, conn, addr):
         file_data = self.server_recv(conn).decode()
@@ -184,6 +195,7 @@ class server:
                 bytes = self.server_recv(conn)
         print("Done")
 
+
     def send_file(self, filename, conn, addr):
         file_size = os.path.getsize(filename)
         print(f"begin uploading {filename}, size is {file_size}")
@@ -198,11 +210,16 @@ class server:
 
     # send the msg to the server. msg is in bytes and conn is the client connection
     def server_send(self, conn, msg):
-        conn.send(msg)
+        f = Fernet(server.key)
+        encrypted = f.encrypt(msg)
+        conn.send(encrypted)
 
     # receive message from the server, the returned message is in bytes, conn is the client connection
     def server_recv(self, conn):
-        return conn.recv(server.BUFFER_SIZE)
+        f = Fernet(server.key)
+        message = conn.recv(server.BUFFER_SIZE)
+        decyrpted = f.decrypt(message)
+        return decyrpted
 
 if __name__ == '__main__':
     server()

