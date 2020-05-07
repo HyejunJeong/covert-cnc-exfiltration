@@ -18,6 +18,7 @@ class client:
     # host = 'localhost'
 
     # port of the server to connect to, can be changed depending on what port server is listening at
+    # port = 53
     port = 3000
 
     BUFFER_SIZE = 20480
