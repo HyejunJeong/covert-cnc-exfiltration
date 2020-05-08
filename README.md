@@ -1,6 +1,6 @@
-# __Covert C&C and Exfiltration__
+# Covert C&C and Exfiltration
 
-#### [Demo] https://www.youtube.com/watch?v=LvgzIZapwLY
+#### [Demo] _https://www.youtube.com/watch?v=LvgzIZapwLY_
 #### https://github.com/HyejunJeong/covert-cnc-exfiltration
 
 This program is a client and a server for covert command and control of, and data exfiltration from, an infected client.
@@ -13,14 +13,14 @@ The client (victim machine) sends a request and connects to the attacker-control
 Large files are broken up into multiple packets and transferred to the server through TCP connection in order to achieve a reliable in-order data transfer.
 
 
-#### __Requirements__ 
+#### Requirements
 * Linux
 * python3
 
-## __Getting Started__
+## Getting Started
 
 
-### Running the __Server__
+### Running the Server
 
 1. cd to the project directory, and ssh into aws cloud server. 
     ```shell
@@ -33,7 +33,7 @@ Large files are broken up into multiple packets and transferred to the server th
     sudo python3 server.py
     ```
 
-### Running the __Client__
+### Running the Client
 > **Note:** You will have to **start the server first** before running the client.
 
 1. Clone this repository.
@@ -49,7 +49,7 @@ Large files are broken up into multiple packets and transferred to the server th
 
 
 
-## __Instructions__
+## Instructions
 
 1. In the server, wait for the client connection and run ``` list ``` to see connected clients.
 
@@ -67,6 +67,6 @@ Large files are broken up into multiple packets and transferred to the server th
 
 ## Authors
 
-* **Xiangshuai Gao** 
-* **Burak Torman**
-* **Hyejun Jeong**
+* **Xiangshuai Gao (110930549)** 
+* **Burak Torman (111916573)**
+* **Hyejun Jeong (110647348)**
