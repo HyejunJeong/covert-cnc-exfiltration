@@ -1,5 +1,6 @@
 # __Covert C&C and Exfiltration__
 
+#### Demonstration: https://www.youtube.com/watch?v=LvgzIZapwLY
 #### https://github.com/HyejunJeong/covert-cnc-exfiltration
 
 This program is a client and a server for covert command and control of, and data exfiltration from, an infected client.
