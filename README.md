@@ -62,3 +62,10 @@ Large files are broken up into multiple packets and transferred to the server th
 > **Note:** If you do download/upload on a file that doesn't exist, it will give you the same error (No such file or directory: ...).
 
 5. Press ``Ctrl-C`` to shut down the server.
+
+
+## Authors
+
+* **Xiangshuai Gao** 
+* **Burak Torman**
+* **Hyejun Jeong**
