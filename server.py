@@ -174,7 +174,7 @@ class server:
     def recv_file(self, conn, addr):
         file_data = self.server_recv(conn).decode()
         # sending an ack to the client
-        self.client_send(" ".encode())
+        self.server_send(conn, " ")
 
         if len(file_data) < 5:
             print(file_data)
