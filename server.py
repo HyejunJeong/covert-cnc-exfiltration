@@ -13,15 +13,15 @@ class server:
     port = 53
     # port = 3000
     hostname = socket.gethostname()
-    host = socket.gethostbyname(hostname) 
+    host = socket.gethostbyname(hostname)
     BUFFER_SIZE = 20480
-    
+
     # these are for denoting what jobs to perform, 1 for handling connection, 2 for interactive server
     JOB_NUM = [1, 2]
     queue = Queue()
     addrs = []
     conns = []
-    
+
     # number of threads to handle our jobs. Since we only need one thread for each job, we create two threads
     WORKERS_NUM = 2
 
@@ -91,7 +91,7 @@ class server:
                     continue
                 try:
                     self.server_send(conn, str.encode(cmd))
-                    self.recv_fileserver(conn, addr)
+                    self.recv_file(conn, addr)
                     continue
                 except Exception as error:
                     print("connection lost: {}".format(str(error)))
