@@ -10,8 +10,8 @@ from cryptography.fernet import Fernet
 
 class server:
     server_sock = None
-    # port = 53
-    port = 3000
+    port = 53
+    # port = 3000
     hostname = socket.gethostname()
     host = socket.gethostbyname(hostname)
     BUFFER_SIZE = 20480
@@ -173,6 +173,9 @@ class server:
 
     def recv_file(self, conn, addr):
         file_data = self.server_recv(conn).decode()
+        # sending an ack to the client
+        self.client_send(" ".encode())
+
         if len(file_data) < 5:
             print(file_data)
             return

